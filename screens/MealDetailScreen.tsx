@@ -1,26 +1,46 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import {View, Text, Button, StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { MEALS } from '../data/dummy-data';
 import HeaderButton from '../components/HeaderButton';
+import DefaultStyles from "../constants/FontStyle";
+
+const ListItem = (props: any) => {
+    return (
+        <View style={styles.listItem}>
+            <Text style={DefaultStyles.defaultText}>{props.children}</Text>
+        </View>
+    );
+}
 
 const MealDetailScreen = (props: any) => {
     const mealId = props.navigation.getParam('mealId');
 
     const selectedMeal = MEALS.find(meal => meal.id === mealId);
 
-    return (
-        <View style={styles.screen}>
-            <Text>{selectedMeal ? selectedMeal.title : null}</Text>
-            <Button
-                title="Go Back to Categories"
-                onPress={() => {
-                    props.navigation.popToTop();
-                }}
-            />
-        </View>
-    );
+    if (selectedMeal) {
+        return (
+            <ScrollView>
+                <Image style={styles.image} source={{uri: selectedMeal.imageUrl}} />
+                <View style={styles.details}>
+                    <Text style={DefaultStyles.defaultText}>{selectedMeal.duration}m</Text>
+                    <Text style={DefaultStyles.defaultText}>{selectedMeal.complexity.toUpperCase()}</Text>
+                    <Text style={DefaultStyles.defaultText}>{selectedMeal.affordability.toUpperCase()}</Text>
+                </View>
+                <Text style={styles.title}>Ingredients</Text>
+                {selectedMeal.ingredients.map((ingredient: any) => {
+                    return <ListItem key={ingredient}>{ingredient}</ListItem>
+                })}
+                <Text style={styles.title}>Steps</Text>
+                {selectedMeal.ingredients.map((step: any) => {
+                    return <ListItem key={step}>{step}</ListItem>
+                })}
+            </ScrollView>
+        );
+    } else {
+        return <View></View>
+    }
 };
 
 MealDetailScreen.navigationOptions = (navigationData: any) => {
@@ -43,10 +63,26 @@ MealDetailScreen.navigationOptions = (navigationData: any) => {
 };
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+    image: {
+        width: "100%",
+        height: 200,
+    },
+    details: {
+        flexDirection: "row",
+        padding: 15,
+        justifyContent: "space-around",
+    },
+    title: {
+        fontFamily: "open-sans-bold",
+        fontSize: 22,
+        textAlign: "center",
+    },
+    listItem: {
+        marginVertical: 10,
+        marginHorizontal: 20,
+        borderColor: "#ccc",
+        borderWidth: 1,
+        padding: 10,
     }
 });
 
