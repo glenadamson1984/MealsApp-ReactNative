@@ -1,6 +1,6 @@
 class Meal {
     public id: any;
-    public categoryIds: any;
+    public categoryIds: string[];
     public title: any;
     public affordability: any;
     public complexity: any;
@@ -13,7 +13,7 @@ class Meal {
     public isVegetarian: any;
     public isLactoseFree: any;
 
-    constructor(id: any, categoryIds: any, title: any, affordability: any, complexity: any, imageUrl: any, duration: any,
+    constructor(id: any, categoryIds: string[], title: any, affordability: any, complexity: any, imageUrl: any, duration: any,
                 ingredients: any, steps: any, isGlutenFree: any, isVegan: any, isVegetarian: any, isLactoseFree: any) {
 
         this.id = id;

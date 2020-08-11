@@ -1,29 +1,35 @@
-import { createAppContainer} from "react-navigation";
+import { Platform } from 'react-native';
+import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from "react-navigation-stack";
-import CategoriesScreen from "../screens/CatergoriesScreen";
-import CategoryMealsScreen from "../screens/CategoryMealsScreen";
-import MealDetailScreen from "../screens/MealDetailScreen";
-import Colors from "../constants/Colors";
 
-const MealsNavigator = createStackNavigator({
-    Categories: CategoriesScreen,
-    CategoryMeals: {
-        screen: CategoryMealsScreen,
-        navigationOptions: {
+import CategoriesScreen from '../screens/CatergoriesScreen';
+import CategoryMealsScreen from '../screens/CategoryMealsScreen';
+import MealDetailScreen from '../screens/MealDetailScreen';
+import Colors from '../constants/Colors';
+
+const MealsNavigator = createStackNavigator(
+    {
+        Categories: {
+            screen: CategoriesScreen
+        },
+        CategoryMeals: {
+            // @ts-ignore
+            screen: CategoryMealsScreen
+        },
+        // @ts-ignore
+        MealDetail: MealDetailScreen
+    },
+    {
+        // initialRouteName: 'Categories',
+        defaultNavigationOptions: {
             headerStyle: {
-                backgroundColor: "red"
+                backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : ''
             },
-            headerTintColor: "white",
+            headerTintColor:
+                Platform.OS === 'android' ? 'white' : Colors.primaryColor,
+            headerTitle: 'A Screen'
         }
-    },
-    MealDetail: MealDetailScreen
-    }, {
-    defaultNavigationOptions: {
-    headerStyle: {
-        backgroundColor: Colors.primaryColor
-    },
-    headerTintColor: "white",
-    }, mode: "modal"
-});
+    }
+);
 
 export default createAppContainer(MealsNavigator);
